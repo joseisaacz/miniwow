@@ -1,8 +1,6 @@
 #include"Faccion.h"
 
 Faccion::Faccion(){
-this->nombre="";
-this->id=-1;
 }
 
 Faccion::Faccion(int _id,char* _nombre){

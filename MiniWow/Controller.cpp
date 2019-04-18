@@ -67,7 +67,7 @@ class Controller{
         }while(choice ==1 && choice == 2);
 	}
 	void insertarJugadores(Jugador jugador){
-		/*sqlite3_stmt *stmt;  
+		sqlite3_stmt *stmt;  
 		cout<<"Abre metoodod "<<jugador.getNombre()<<" "<< jugador.getId()<<" "<<endl;
 		char sSQL [BUFFER_SIZE] = "\0";
 		
@@ -86,7 +86,7 @@ class Controller{
         sqlite3_free(zErrMsg);
         } else {
             fprintf(stdout, "Operation done successfully\n");
-        }*/
+        }
         cout<<"Cambios realizados"<<endl;
 	}
 	
@@ -118,7 +118,7 @@ class Controller{
         }while(choice ==1 && choice == 2);
 	}
 	void verPersonajes(Jugador jugador){
-		/*char sSQL [BUFFER_SIZE] = "\0";
+		char sSQL [BUFFER_SIZE] = "\0";
         int b = jugador.getId().length();  
         char id [b+1]; 
         strcpy(id, jugador.getId().c_str()); 
@@ -130,7 +130,7 @@ class Controller{
         sqlite3_free(zErrMsg);
         } else {
             fprintf(stdout, "Operation done successfully\n");
-        }*/
+        }
 	}
 	void verFacciones(){
         system("cls");
