@@ -87,6 +87,7 @@ class Controller{
         } else {
             fprintf(stdout, "Operation done successfully\n");
         }*/
+        cout<<"Cambios realizados"<<endl;
 	}
 	
 	void menuIniciarSesion(){
