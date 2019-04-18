@@ -1,11 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "Jugador.cpp"
-#include <C:\Users\Josue\Desktop\pBases\MiniWow\sqlite3.h>
+#include <C:\Users\dh173\OneDrive\Documentos\GitHub\miniwow\MiniWow\sqlite3.h>
 #include <iostream>
 #include<string>
 
 #define BUFFER_SIZE 256
+#include <bits/stdc++.h> 
 using namespace std;
 
 class Controller{
@@ -89,24 +90,46 @@ class Controller{
         }
         cout<<"Cambios realizados"<<endl;
 	}
-	
-	void menuIniciarSesion(){
+	void iniciarJugador(string user){
+		sqlite3_stmt *stmt;  
+		cout<<"Abre metoodod "<<user<<" "<<endl;
+		char sSQL [BUFFER_SIZE] = "\0";
 		
+        int b = user.length();  
+        char id [b+1]; 
+        strcpy(id, user.c_str()); 
+		
+        sprintf(sSQL, "select * from jugador where id='%s';",id );
+        rc = sqlite3_exec(db,sSQL, callback, (void*)data, &zErrMsg); 
+        if( rc != SQLITE_OK ) {
+        fprintf(stderr, "SQL error: %s\n", zErrMsg);
+        sqlite3_free(zErrMsg);
+        } else {
+            fprintf(stdout, "Operation done successfully\n");
+			menuJugador(user);
+        }
+        
 	}
-	void menuJugador(Jugador jugador){
+	void menuIniciarSesion(){
+		string username;
+		cout<<"Digite su nombre de usuario"<<endl;
+		cin>>username;
+		iniciarJugador(username);
+	} 
+    void menuPersonajes(string apodo){
 		int choice=0;
 		do{
             system("cls");
-			cout<<"Bienvenido " << jugador.getNombre()<< endl;
-            cout<<("1. Ver Personajes \n");
-            cout<<("2. Crear Personajes\n");
+			cout<<"Bienvenido " << apodo << endl;
+            cout<<("1. Trasladar personaje \n");
+            cout<<("2. Equipar Personaje\n");
             cout<<("3. Salir\n");
             cin>> choice ;
  
             switch (choice){
-				case 1:verPersonajes(jugador);
+				case 1:trasladarPersonaje(apodo);
                     break;
-                case 2: crearPersonajes(jugador);
+                case 2: equiparPersonaje(apodo);
                     break;
                 case 3:printf("Saliendo...\n");
                     break;
@@ -117,20 +140,56 @@ class Controller{
  
         }while(choice ==1 && choice == 2);
 	}
-	void verPersonajes(Jugador jugador){
-		char sSQL [BUFFER_SIZE] = "\0";
-        int b = jugador.getId().length();  
-        char id [b+1]; 
-        strcpy(id, jugador.getId().c_str()); 
+	void trasladarPersonaje(string apodo){
 		
-        sprintf(sSQL, "select * from Personajes where jugador='%s';",id );
+	}
+	void equiparPersonaje(string apodo){
+		
+	}
+	void menuJugador(string user){
+		int choice=0;
+		do{
+            system("cls");
+			cout<<"Bienvenido " << user << endl;
+            cout<<("1. Ver Personajes \n");
+            cout<<("2. Crear Personajes\n");
+            cout<<("3. Salir\n");
+            cin>> choice ;
+ 
+            switch (choice){
+				case 1:verPersonajes(user);
+                    break;
+                case 2: crearPersonajes(user);
+                    break;
+                case 3:printf("Saliendo...\n");
+                    break;
+ 
+                default:printf("Digite una opcion valida!\n");
+                     break;
+            }
+ 
+        }while(choice ==1 && choice == 2);
+	}
+	void verPersonajes(string user){
+		char sSQL [BUFFER_SIZE] = "\0";
+        int b = user.length();  
+        char id [b+1]; 
+        strcpy(id, user.c_str()); 
+		
+        sprintf(sSQL, "select * from personaje where jugador='%s';",id );
         rc = sqlite3_exec(db,sSQL, callback, (void*)data, &zErrMsg); 
         if( rc != SQLITE_OK ) {
         fprintf(stderr, "SQL error: %s\n", zErrMsg);
         sqlite3_free(zErrMsg);
         } else {
+			cout<<"apodo,genero,color,jugador,faccion,raza,clase,region,armamento,nivel"<<endl;
             fprintf(stdout, "Operation done successfully\n");
+			string choice;
+            cout<<"Digite el apodo de su  personaje para ver mas opciones"<<endl;
+            cin>>choice;
+		    menuPersonajes(choice);
         }
+		
 	}
 	void verFacciones(){
         system("cls");
@@ -141,13 +200,15 @@ class Controller{
         sqlite3_free(zErrMsg);
         } 
         else {
+			 
              fprintf(stdout, "Operation done successfully\n");
-        }
-        int choice;
-        cout<<"Digite el id de la faccion que desea escoger"<<endl;
-        cin>>choice;
+			 int choice;
+             cout<<"Digite el id de la faccion que desea escoger"<<endl;
+             cin>>choice;
     
         verRazasPorFaccion(choice);
+        }
+        
 	}
 	
 	void registrarJugador(){
@@ -161,10 +222,10 @@ class Controller{
 		jugador.setNombre(nombre);
 		jugador.setStatus(true);
 		insertarJugadores(jugador);
-		menuJugador(jugador);
+		menuJugador(username);
 	}
 	
-	void crearPersonajes(Jugador jugador){
+	void crearPersonajes(string user){
         system("cls");
 		string userName;
 		string genero;
